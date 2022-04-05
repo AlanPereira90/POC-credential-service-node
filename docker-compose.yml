@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  api:
+    image: 'credential-service'
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: user-service
+    ports:
+      - 6060:6060
+    env_file: .env
+    depends_on:
+      - dynamodb
+    volumes:
+      - ./src:/api/src
+  
+  dynamodb:
+    command:
+      [
+        "-jar",
+        "DynamoDBLocal.jar",
+        "-sharedDb",
+        "-dbPath",
+        "/var/lib/dynamodb/"
+      ]
+    container_name: dynamodb
+    environment:
+      VIRTUAL_PORT: 8000
+    image: amazon/dynamodb-local:latest
+    networks:
+      - default
+    ports:
+      - 8000:8000
+    user: root
+    volumes:
+      - dynamodb:/var/lib/dynamodb/
+volumes:
+  dynamodb:
