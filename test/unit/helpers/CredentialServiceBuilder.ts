@@ -20,12 +20,11 @@ export default class CredentialServiceBuilder {
 
     const save = stub();
     const findOne = stub();
-    const remove = stub();
 
     return new CredentialService(
       { encrypt, decrypt, ...cipher },
       { generate, verify, ...token },
-      { save, findOne, remove, ...repository },
+      { save, findOne, ...repository },
     );
   }
 }

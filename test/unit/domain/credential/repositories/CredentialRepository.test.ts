@@ -16,7 +16,7 @@ describe('Credential Repository', () => {
       const result = await instance.save(credential);
 
       expect(result).to.be.deep.equal(credential);
-      expect(persist).to.have.been.calledOnceWith(credential);
+      expect(persist).to.have.been.calledOnceWith(credential.userName, credential);
     });
 
     it('should fail when database service fails', async () => {
@@ -29,7 +29,7 @@ describe('Credential Repository', () => {
       const promise = instance.save(credential);
 
       await expect(promise).to.be.eventually.rejected.with.property('message', error);
-      expect(persist).to.have.been.calledOnceWith(credential);
+      expect(persist).to.have.been.calledOnceWith(credential.userName, credential);
     });
   });
 
@@ -69,33 +69,6 @@ describe('Credential Repository', () => {
 
       await expect(promise).to.be.eventually.rejected.with.property('message', error);
       expect(find).to.have.been.calledOnceWith(userName);
-    });
-  });
-
-  describe('remove()', () => {
-    it('should remove a credential successfully', async () => {
-      const userName = faker.lorem.word();
-      const deleteMethod = stub().resolves();
-
-      const instance = CredentialRepositoryBuilder.build({ delete: deleteMethod });
-
-      const result = await instance.remove(userName);
-
-      expect(result).to.be.undefined;
-      expect(deleteMethod).to.have.been.calledOnceWith(userName);
-    });
-
-    it('should fail when database service fails', async () => {
-      const userName = faker.lorem.word();
-      const error = faker.lorem.sentence();
-      const deleteMethod = stub().rejects(new Error(error));
-
-      const instance = CredentialRepositoryBuilder.build({ delete: deleteMethod });
-
-      const promise = instance.remove(userName);
-
-      await expect(promise).to.be.eventually.rejected.with.property('message', error);
-      expect(deleteMethod).to.have.been.calledOnceWith(userName);
     });
   });
 });

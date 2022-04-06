@@ -6,14 +6,10 @@ export default class CredentialRepository implements ICredentialRepository {
   constructor(private readonly _database: IDatabase<ICredential>) {}
 
   save(credential: ICredential): Promise<ICredential> {
-    return this._database.persist(credential);
+    return this._database.persist(credential.userName, credential);
   }
 
   findOne(userName: string): Promise<void | ICredential> {
     return this._database.find(userName);
-  }
-
-  remove(userName: string): Promise<void> {
-    return this._database.delete(userName);
   }
 }

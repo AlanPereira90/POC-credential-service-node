@@ -60,11 +60,4 @@ export default class CredentialService implements ICredentialService {
 
     return this.generateToken(userName, credential.id);
   }
-
-  async cancel(userName: string, password: string): Promise<void> {
-    const credential = await this.getCredential(userName);
-    this.validateCredential(credential, password);
-
-    return this._repository.remove(userName);
-  }
 }

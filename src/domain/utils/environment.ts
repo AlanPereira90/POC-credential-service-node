@@ -24,3 +24,11 @@ export const TOKEN = {
   SECRET: process.env.TOKEN_SECRET || requiredEnvVar('JWT_SECRET'),
   EXPIRES_IN: process.env.TOKEN_EXPIRES_IN || '8 h',
 };
+
+export const AWS_CONFIG = {
+  ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+  DYNAMO_ENDPOINT: process.env.AWS_DYNAMO_ENDPOINT || requiredEnvVar('AWS_DYNAMO_ENDPOINT'),
+  DYNAMO_REGION: process.env.AWS_DYNAMO_REGION || requiredEnvVar('AWS_DYNAMO_REGION'),
+  DYNAMO_TABLE_NAME: process.env.AWS_DYNAMO_TABLE_NAME || requiredEnvVar('AWS_DYNAMO_TABLE_NAME'),
+};

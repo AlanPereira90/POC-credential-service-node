@@ -8,8 +8,7 @@ export default class CredentialRepositoryBuilder {
   static build(database: Partial<IDatabase<any>> = {}): ICredentialRepository {
     const persist = stub();
     const find = stub();
-    const deleteMethod = stub();
 
-    return new CredentialRepository({ persist, find, delete: deleteMethod, ...database });
+    return new CredentialRepository({ persist, find, ...database });
   }
 }
