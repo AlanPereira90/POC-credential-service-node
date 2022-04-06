@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { CREDENTIAL_NOT_FOUND, INVALID_PASSWORD } from '../../common/utils/errorList';
 import { ICipher } from '../../common/interfaces/ICipher';
 import { IToken } from '../../common/interfaces/IToken';
@@ -12,8 +14,11 @@ export default class CredentialService implements ICredentialService {
     private readonly _repository: ICredentialRepository,
   ) {}
 
-  private generateToken(userName: string): Promise<string> {
-    return this._token.generate(this._cipher.encrypt(userName));
+  private generateToken(userName: string, credentialId: string): Promise<string> {
+    return this._token.generate({
+      sub: this._cipher.encrypt(userName),
+      data: { id: credentialId },
+    });
   }
 
   private validateCredential(credential: ICredential, password: string): void {
@@ -34,18 +39,26 @@ export default class CredentialService implements ICredentialService {
     return credential;
   }
 
+  private buildCredentialData(userName: string, password: string): ICredential {
+    return {
+      id: uuidv4(),
+      userName,
+      password: this._cipher.encrypt(password),
+    };
+  }
+
   async signin(userName: string, password: string): Promise<string> {
     const credential = await this.getCredential(userName);
     this.validateCredential(credential, password);
 
-    return this.generateToken(userName);
+    return this.generateToken(userName, credential.id);
   }
 
   async signup(userName: string, password: string): Promise<string> {
-    const cryptedPassword = this._cipher.encrypt(password);
-    await this._repository.save({ userName, password: cryptedPassword });
+    const credential = this.buildCredentialData(userName, password);
+    await this._repository.save(credential);
 
-    return this.generateToken(userName);
+    return this.generateToken(userName, credential.id);
   }
 
   async cancel(userName: string, password: string): Promise<void> {
