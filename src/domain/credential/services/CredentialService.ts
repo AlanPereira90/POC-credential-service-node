@@ -3,6 +3,7 @@ import { ICipher } from '../../common/interfaces/ICipher';
 import { IToken } from '../../common/interfaces/IToken';
 import { ICredentialRepository } from '../interfaces/ICredentialRepository';
 import { ICredentialService } from '../interfaces/ICredentialService';
+import { ICredential } from '../interfaces/ICredential';
 
 export default class CredentialService implements ICredentialService {
   constructor(
@@ -15,18 +16,27 @@ export default class CredentialService implements ICredentialService {
     return this._token.generate(this._cipher.encrypt(userName));
   }
 
-  async signin(userName: string, password: string): Promise<string> {
+  private validateCredential(credential: ICredential, password: string): void {
+    const decryptedPassword = this._cipher.decrypt(credential.password);
+
+    if (decryptedPassword !== password) {
+      throw new Error(INVALID_PASSWORD.MESSAGE);
+    }
+  }
+
+  private async getCredential(userName: string): Promise<ICredential> {
     const credential = await this._repository.findOne(userName);
 
     if (!credential) {
       throw new Error(CREDENTIAL_NOT_FOUND.MESSAGE); //TODO: ResponseError
     }
 
-    const decryptedPassword = this._cipher.decrypt(credential.password);
+    return credential;
+  }
 
-    if (decryptedPassword !== password) {
-      throw new Error(INVALID_PASSWORD.MESSAGE);
-    }
+  async signin(userName: string, password: string): Promise<string> {
+    const credential = await this.getCredential(userName);
+    this.validateCredential(credential, password);
 
     return this.generateToken(userName);
   }
@@ -36,5 +46,12 @@ export default class CredentialService implements ICredentialService {
     await this._repository.save({ userName, password: cryptedPassword });
 
     return this.generateToken(userName);
+  }
+
+  async cancel(userName: string, password: string): Promise<void> {
+    const credential = await this.getCredential(userName);
+    this.validateCredential(credential, password);
+
+    return this._repository.remove(userName);
   }
 }

@@ -84,4 +84,56 @@ describe('CredentialService', () => {
       expect(decrypt).to.have.been.calledWith(cryptedPassword);
     });
   });
+
+  describe('cancel()', () => {
+    it('should cancel a credential successfully', async () => {
+      const userName = faker.internet.userName();
+      const password = faker.internet.password();
+      const cryptedPassword = faker.datatype.uuid();
+
+      const findOne = stub().resolves({ userName, password: cryptedPassword });
+      const remove = stub();
+      const decrypt = stub().returns(password);
+
+      const instance = CredentialServiceBuilder.build({ decrypt }, {}, { findOne, remove });
+
+      const result = await instance.cancel(userName, password);
+
+      expect(result).to.be.undefined;
+      expect(findOne).to.have.been.calledWith(userName);
+      expect(decrypt).to.have.been.calledWith(cryptedPassword);
+      expect(remove).to.have.been.calledWith(userName);
+    });
+
+    it('should fail when credential is not found', async () => {
+      const userName = faker.internet.userName();
+      const password = faker.internet.password();
+
+      const findOne = stub().resolves();
+
+      const instance = CredentialServiceBuilder.build({}, {}, { findOne });
+
+      const promise = instance.cancel(userName, password);
+
+      await expect(promise).to.be.eventually.rejected.with.property('message', CREDENTIAL_NOT_FOUND.MESSAGE);
+      expect(findOne).to.have.been.calledWith(userName);
+    });
+
+    it('should fail with an invalid password', async () => {
+      const userName = faker.internet.userName();
+      const password = faker.internet.password();
+      const cryptedPassword = faker.datatype.uuid();
+
+      const findOne = stub().resolves({ userName, password: cryptedPassword });
+      const decrypt = stub().returns(faker.lorem.word());
+
+      const instance = CredentialServiceBuilder.build({ decrypt }, {}, { findOne });
+
+      const promise = instance.cancel(userName, password);
+
+      await expect(promise).to.be.eventually.rejected.with.property('message', INVALID_PASSWORD.MESSAGE);
+      expect(findOne).to.have.been.calledWith(userName);
+      expect(decrypt).to.have.been.calledWith(cryptedPassword);
+    });
+  });
 });
