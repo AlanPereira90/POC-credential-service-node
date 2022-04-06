@@ -14,4 +14,15 @@ export default class Token implements IToken {
       });
     });
   }
+
+  verify(token: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      jwt.verify(token, TOKEN.SECRET, (err) => {
+        if (err) {
+          return reject(err); //TODO: RESPONSE ERROR
+        }
+        resolve(true);
+      });
+    });
+  }
 }

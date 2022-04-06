@@ -24,4 +24,21 @@ describe('Token', () => {
       });
     });
   });
+
+  describe('verify()', () => {
+    it('should validate a token successfully', async () => {
+      const data = {
+        [faker.lorem.word()]: faker.lorem.word(),
+      };
+      const subject = faker.lorem.word();
+
+      const instance = new Token();
+
+      const token = await instance.generate(subject, data);
+
+      const result = await instance.verify(token);
+
+      expect(result).to.be.true;
+    });
+  });
 });

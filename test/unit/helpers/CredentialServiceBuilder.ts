@@ -16,6 +16,7 @@ export default class CredentialServiceBuilder {
     const decrypt = stub();
 
     const generate = stub();
+    const verify = stub();
 
     const save = stub();
     const findOne = stub();
@@ -23,7 +24,7 @@ export default class CredentialServiceBuilder {
 
     return new CredentialService(
       { encrypt, decrypt, ...cipher },
-      { generate, ...token },
+      { generate, verify, ...token },
       { save, findOne, remove, ...repository },
     );
   }
