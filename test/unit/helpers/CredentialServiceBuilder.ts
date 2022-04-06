@@ -13,6 +13,7 @@ export default class CredentialServiceBuilder {
     repository: Partial<ICredentialRepository> = {},
   ): ICredentialService {
     const encrypt = stub();
+    const decrypt = stub();
 
     const generate = stub();
 
@@ -21,7 +22,7 @@ export default class CredentialServiceBuilder {
     const remove = stub();
 
     return new CredentialService(
-      { encrypt, ...cipher },
+      { encrypt, decrypt, ...cipher },
       { generate, ...token },
       { save, findOne, remove, ...repository },
     );

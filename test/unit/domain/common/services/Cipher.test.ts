@@ -19,4 +19,18 @@ describe('Cipher', () => {
       expect(decrypted).to.be.equal(data);
     });
   });
+
+  describe('decrypt()', () => {
+    it('should decrypt an encrypted data successfully', () => {
+      const data = faker.lorem.word();
+
+      const instance = new Cipher();
+
+      const encrypted = AES.encrypt(data, CIPHER.KEY).toString();
+      const decrypted = instance.decrypt(encrypted);
+
+      expect(encrypted).to.be.not.equal(data);
+      expect(decrypted).to.be.equal(data);
+    });
+  });
 });
