@@ -1,8 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { Lifecycle, registry, scoped } from 'tsyringe';
 
 import { TOKEN } from '../../../domain/utils/environment';
 import { IToken, ITokenContent } from '../interfaces/IToken';
 
+@scoped(Lifecycle.ResolutionScoped)
+@registry([{ token: 'Token', useClass: Token }])
 export default class Token implements IToken {
   generate(content: ITokenContent): Promise<string> {
     return new Promise((resolve, reject) => {

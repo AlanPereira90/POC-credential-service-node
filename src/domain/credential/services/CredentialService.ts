@@ -6,12 +6,15 @@ import { IToken } from '../../common/interfaces/IToken';
 import { ICredentialRepository } from '../interfaces/ICredentialRepository';
 import { ICredentialService } from '../interfaces/ICredentialService';
 import { ICredential } from '../interfaces/ICredential';
+import { inject, Lifecycle, registry, scoped } from 'tsyringe';
 
+@scoped(Lifecycle.ResolutionScoped)
+@registry([{ token: 'CredentialService', useClass: CredentialService }])
 export default class CredentialService implements ICredentialService {
   constructor(
-    private readonly _cipher: ICipher,
-    private readonly _token: IToken,
-    private readonly _repository: ICredentialRepository,
+    @inject('Cipher') private readonly _cipher: ICipher,
+    @inject('Token') private readonly _token: IToken,
+    @inject('CredentialRepository') private readonly _repository: ICredentialRepository,
   ) {}
 
   private generateToken(userName: string, credentialId: string): Promise<string> {

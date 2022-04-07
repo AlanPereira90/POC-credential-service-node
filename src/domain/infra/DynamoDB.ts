@@ -1,4 +1,6 @@
 import AWS from 'aws-sdk';
+import { container } from 'tsyringe';
+
 import { AWS_CONFIG } from '../utils/environment';
 import { IDyanamoDBConnection } from './interfaces/IDyanamoDBConnection';
 
@@ -12,5 +14,9 @@ const connection = new AWS.DynamoDB({
   region: AWS_CONFIG.DYNAMO_REGION,
   credentials,
 });
+
+console.info('DynamoDB connection stablished');
+
+container.registerInstance('DynamoDBConnection', connection);
 
 export default connection as IDyanamoDBConnection;
