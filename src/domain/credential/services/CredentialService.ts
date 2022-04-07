@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { inject, Lifecycle, registry, scoped } from 'tsyringe';
 import { FORBIDDEN, NOT_FOUND } from 'http-status';
 
-import { CREDENTIAL_NOT_FOUND, INVALID_PASSWORD } from '../../common/utils/errorList';
+import { CREDENTIAL_ALREADY_IN_USE, CREDENTIAL_NOT_FOUND, INVALID_PASSWORD } from '../../common/utils/errorList';
 import { ICipher } from '../../common/interfaces/ICipher';
 import { IToken } from '../../common/interfaces/IToken';
 import { ICredentialRepository } from '../interfaces/ICredentialRepository';
@@ -60,9 +60,14 @@ export default class CredentialService implements ICredentialService {
   }
 
   async signup(userName: string, password: string): Promise<string> {
-    const credential = this.buildCredentialData(userName, password);
-    await this._repository.save(credential);
+    const credential = await this._repository.findOne(userName);
+    if (credential) {
+      throw new ResponseError(FORBIDDEN, CREDENTIAL_ALREADY_IN_USE.MESSAGE, CREDENTIAL_ALREADY_IN_USE.CODE);
+    }
 
-    return this.generateToken(userName, credential.id);
+    const credentialData = this.buildCredentialData(userName, password);
+    await this._repository.save(credentialData);
+
+    return this.generateToken(userName, credentialData.id);
   }
 }

@@ -2,7 +2,11 @@ import faker from '@faker-js/faker';
 import { expect } from 'chai';
 import { stub } from 'sinon';
 
-import { CREDENTIAL_NOT_FOUND, INVALID_PASSWORD } from '../../../../../src/domain/common/utils/errorList';
+import {
+  CREDENTIAL_ALREADY_IN_USE,
+  CREDENTIAL_NOT_FOUND,
+  INVALID_PASSWORD,
+} from '../../../../../src/domain/common/utils/errorList';
 import CredentialServiceBuilder from '../../../helpers/CredentialServiceBuilder';
 import CredentialBuilder from '../../../helpers/CredentialBuilder';
 
@@ -26,6 +30,20 @@ describe('CredentialService', () => {
       expect(encrypt).to.have.been.calledWith(credential.password);
       expect(generate).to.have.been.calledOnce;
       expect(save).to.have.been.calledOnce;
+    });
+
+    it('should fail when the credential is already in use', async () => {
+      const userName = faker.internet.userName();
+      const password = faker.internet.password();
+
+      const findOne = stub().resolves(CredentialBuilder.build());
+      const instance = CredentialServiceBuilder.build({}, {}, { findOne });
+
+      const promise = instance.signup(userName, password);
+
+      await expect(promise).to.be.eventually.rejected.with.property('message', CREDENTIAL_ALREADY_IN_USE.MESSAGE);
+      await expect(promise).to.be.eventually.rejected.with.property('code', CREDENTIAL_ALREADY_IN_USE.CODE);
+      expect(findOne).to.have.been.calledWith(userName);
     });
   });
 
@@ -63,6 +81,7 @@ describe('CredentialService', () => {
       const promise = instance.signin(userName, password);
 
       await expect(promise).to.be.eventually.rejected.with.property('message', CREDENTIAL_NOT_FOUND.MESSAGE);
+      await expect(promise).to.be.eventually.rejected.with.property('code', CREDENTIAL_NOT_FOUND.CODE);
       expect(findOne).to.have.been.calledWith(userName);
     });
 
@@ -79,6 +98,7 @@ describe('CredentialService', () => {
       const promise = instance.signin(userName, password);
 
       await expect(promise).to.be.eventually.rejected.with.property('message', INVALID_PASSWORD.MESSAGE);
+      await expect(promise).to.be.eventually.rejected.with.property('code', INVALID_PASSWORD.CODE);
       expect(findOne).to.have.been.calledWith(userName);
       expect(decrypt).to.have.been.calledWith(cryptedPassword);
     });

@@ -48,7 +48,7 @@ export default class Database<T> implements IDatabase<T> {
             return reject(new ResponseError(INTERNAL_SERVER_ERROR, err.message, err.code));
           }
 
-          if (data.Item) resolve(unmarshall(data.Item) as T);
+          resolve(data.Item ? (unmarshall(data.Item) as T) : undefined);
         },
       );
     });

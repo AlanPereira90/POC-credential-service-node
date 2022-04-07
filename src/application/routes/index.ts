@@ -11,7 +11,11 @@ function getControllers(): IController[] {
 
 function getHandler(controller: IController): RequestHandler[] {
   const handler: RequestHandler = async (req, res, next) => {
-    await controller.handler(req, res, next);
+    try {
+      await controller.handler(req, res, next);
+    } catch (err) {
+      next(err);
+    }
   };
 
   const requestValidator: RequestHandler = async (req, res, next) => {
