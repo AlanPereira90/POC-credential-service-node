@@ -14,7 +14,15 @@ function getHandler(controller: IController): RequestHandler[] {
     await controller.handler(req, res, next);
   };
 
-  return [handler];
+  const requestValidator: RequestHandler = async (req, res, next) => {
+    if (controller.requestValidator) {
+      await controller.requestValidator(req, res, next);
+    } else {
+      next();
+    }
+  };
+
+  return [requestValidator, handler];
 }
 
 for (const controller of getControllers()) {

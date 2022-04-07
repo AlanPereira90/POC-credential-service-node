@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { inject, Lifecycle, registry, scoped } from 'tsyringe';
+import { FORBIDDEN, NOT_FOUND } from 'http-status';
 
 import { CREDENTIAL_NOT_FOUND, INVALID_PASSWORD } from '../../common/utils/errorList';
 import { ICipher } from '../../common/interfaces/ICipher';
@@ -6,7 +8,7 @@ import { IToken } from '../../common/interfaces/IToken';
 import { ICredentialRepository } from '../interfaces/ICredentialRepository';
 import { ICredentialService } from '../interfaces/ICredentialService';
 import { ICredential } from '../interfaces/ICredential';
-import { inject, Lifecycle, registry, scoped } from 'tsyringe';
+import ResponseError from '../../utils/ResponseError';
 
 @scoped(Lifecycle.ResolutionScoped)
 @registry([{ token: 'CredentialService', useClass: CredentialService }])
@@ -28,7 +30,7 @@ export default class CredentialService implements ICredentialService {
     const decryptedPassword = this._cipher.decrypt(credential.password);
 
     if (decryptedPassword !== password) {
-      throw new Error(INVALID_PASSWORD.MESSAGE);
+      throw new ResponseError(FORBIDDEN, INVALID_PASSWORD.MESSAGE, INVALID_PASSWORD.CODE);
     }
   }
 
@@ -36,7 +38,7 @@ export default class CredentialService implements ICredentialService {
     const credential = await this._repository.findOne(userName);
 
     if (!credential) {
-      throw new Error(CREDENTIAL_NOT_FOUND.MESSAGE); //TODO: ResponseError
+      throw new ResponseError(NOT_FOUND, CREDENTIAL_NOT_FOUND.MESSAGE, CREDENTIAL_NOT_FOUND.CODE);
     }
 
     return credential;

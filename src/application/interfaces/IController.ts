@@ -1,4 +1,4 @@
-import { Request, RequestHandler, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { HttpVerb } from '../../@types/http-verb';
 
 export type ParametersField = 'query' | 'params' | 'body';
@@ -13,10 +13,15 @@ export type CustomRequest<R, T extends ParametersField = 'body'> = T extends 'qu
 
 export type CustomResponse<T> = Response<T>;
 
+export type CustomResponseError = CustomResponse<{ message: string }>;
+
+export type CustomNextFunction = NextFunction;
+
 export type CustomRequestHandler = RequestHandler;
 
 export interface IController {
   verb: HttpVerb;
   path: string;
   handler: CustomRequestHandler;
+  requestValidator?: CustomRequestHandler;
 }

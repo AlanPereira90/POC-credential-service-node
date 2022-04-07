@@ -22,7 +22,7 @@ export const CIPHER = {
 
 export const TOKEN = {
   SECRET: process.env.TOKEN_SECRET || requiredEnvVar('JWT_SECRET'),
-  EXPIRES_IN: process.env.TOKEN_EXPIRES_IN || '8 h',
+  EXPIRES_IN: process.env.TOKEN_EXPIRES_IN || '1 s',
 };
 
 export const AWS_CONFIG = {

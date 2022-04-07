@@ -1,15 +1,23 @@
+import Joi from 'joi';
 import { inject, Lifecycle, registry, scoped } from 'tsyringe';
+import { BAD_REQUEST, OK } from 'http-status';
 
 import { HttpVerb } from '../../../@types/http-verb';
 import { ICredentialService } from '../../../domain/credential/interfaces/ICredentialService';
-import { CustomRequest, CustomResponse, IController } from '../../interfaces/IController';
+import {
+  CustomNextFunction,
+  CustomRequest,
+  CustomResponse,
+  CustomResponseError,
+  IController,
+} from '../../interfaces/IController';
 
-interface SignupRequest {
+interface SigninRequest {
   userName: string;
   password: string;
 }
 
-interface SignupResponse {
+interface SigninResponse {
   accessToken: string;
 }
 
@@ -21,10 +29,25 @@ export default class SigninController implements IController {
 
   constructor(@inject('CredentialService') private readonly _service: ICredentialService) {}
 
-  public async handler(req: CustomRequest<SignupRequest>, res: CustomResponse<SignupResponse>) {
+  public async handler(req: CustomRequest<SigninRequest>, res: CustomResponse<SigninResponse>) {
     const { userName, password } = req.body;
     const accessToken = await this._service.signin(userName, password);
 
-    res.status(201).json({ accessToken });
+    res.status(OK).json({ accessToken });
+  }
+
+  public async requestValidator(req: CustomRequest<SigninRequest>, res: CustomResponseError, next: CustomNextFunction) {
+    const schema = Joi.object({
+      userName: Joi.string().required(),
+      password: Joi.string().required(),
+    });
+
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+      res.status(BAD_REQUEST).json({ message: error.message });
+    } else {
+      next();
+    }
   }
 }

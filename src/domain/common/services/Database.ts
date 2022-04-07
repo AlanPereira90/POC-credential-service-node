@@ -1,9 +1,11 @@
+import { inject, Lifecycle, registry, scoped } from 'tsyringe';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import { INTERNAL_SERVER_ERROR } from 'http-status';
 
 import { IDatabase } from '../interfaces/IDatabase';
 import { AWS_CONFIG } from '../../utils/environment';
-import { IDyanamoDBConnection } from 'src/domain/infra/interfaces/IDyanamoDBConnection';
-import { inject, Lifecycle, registry, scoped } from 'tsyringe';
+import { IDyanamoDBConnection } from '../../infra/interfaces/IDyanamoDBConnection';
+import ResponseError from '../../utils/ResponseError';
 
 @scoped(Lifecycle.ResolutionScoped)
 @registry([{ token: 'Database', useClass: Database }])
@@ -24,7 +26,7 @@ export default class Database<T> implements IDatabase<T> {
         },
         (err) => {
           if (err) {
-            return reject(err);
+            return reject(new ResponseError(INTERNAL_SERVER_ERROR, err.message, err.code));
           }
           resolve(entity);
         },
@@ -43,7 +45,7 @@ export default class Database<T> implements IDatabase<T> {
         },
         (err, data) => {
           if (err) {
-            return reject(err);
+            return reject(new ResponseError(INTERNAL_SERVER_ERROR, err.message, err.code));
           }
 
           if (data.Item) resolve(unmarshall(data.Item) as T);

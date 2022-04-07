@@ -1,7 +1,15 @@
+import Joi from 'joi';
 import { inject, Lifecycle, registry, scoped } from 'tsyringe';
+import { BAD_REQUEST, OK } from 'http-status';
 
 import { HttpVerb } from '../../../@types/http-verb';
-import { CustomRequest, CustomResponse, IController } from '../../interfaces/IController';
+import {
+  CustomNextFunction,
+  CustomRequest,
+  CustomResponse,
+  CustomResponseError,
+  IController,
+} from '../../interfaces/IController';
 import { IToken } from '../../../domain/common/interfaces/IToken';
 
 interface IntrospectRequest {
@@ -26,6 +34,24 @@ export default class IntrospectController implements IController {
       data: { id },
     } = await this._service.verify(accessToken);
 
-    res.status(201).json({ credentialId: id });
+    res.status(OK).json({ credentialId: id });
+  }
+
+  public async requestValidator(
+    req: CustomRequest<IntrospectRequest>,
+    res: CustomResponseError,
+    next: CustomNextFunction,
+  ) {
+    const schema = Joi.object({
+      accessToken: Joi.string().required(),
+    });
+
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+      res.status(BAD_REQUEST).json({ message: error.message });
+    } else {
+      next();
+    }
   }
 }
