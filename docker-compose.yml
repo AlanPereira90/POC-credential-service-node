@@ -16,16 +16,9 @@ services:
       - ./src:/api/src
     networks:
       - default
-  
+
   dynamodb:
-    command:
-      [
-        "-jar",
-        "DynamoDBLocal.jar",
-        "-sharedDb",
-        "-dbPath",
-        "/var/lib/dynamodb/"
-      ]
+    command: ['-jar', 'DynamoDBLocal.jar', '-sharedDb', '-dbPath', '/var/lib/dynamodb/']
     container_name: dynamodb
     environment:
       VIRTUAL_PORT: 8000
