@@ -15,7 +15,7 @@ paths:
                 properties:
                   credentialId:
                     type: string
-                    example: 606c3778-e4f6-4cfd-b51c-77d182d77ef7
+                    example: 6c0dbc78-cb4e-47bf-9e15-731e59d65276
           headers:
             content-security-policy:
               schema:
@@ -92,15 +92,15 @@ paths:
             etag:
               schema:
                 type: string
-              example: W/"37-MeT0J1ITiUItHBus7LGmOyqzxHY"
+              example: W/"37-cvaw+YHu6q1cy/kC9LbPoG9WlhA"
             x-response-time:
               schema:
                 type: string
-              example: 19.998ms
+              example: 19.294ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -195,11 +195,11 @@ paths:
             x-response-time:
               schema:
                 type: string
-              example: 1.504ms
+              example: 1.277ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -214,7 +214,111 @@ paths:
               properties:
                 accessToken:
                   type: string
-                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNjA2YzM3NzgtZTRmNi00Y2ZkLWI1MWMtNzdkMTgyZDc3ZWY3IiwiZm9vIjoiYmFyIn0sImlhdCI6MTY0OTQyMzQ1OCwiZXhwIjoxNjQ5NDUyMjU4LCJzdWIiOiJDYXJtZWxhIn0.2dJmXyCpRF2rdWfaPqfycI8nXaLTcecw1D1Aaa9mJVU
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNmMwZGJjNzgtY2I0ZS00N2JmLTllMTUtNzMxZTU5ZDY1Mjc2IiwiZm9vIjoiYmFyIn0sImlhdCI6MTY0OTQyNTQ3OSwiZXhwIjoxNjQ5NDU0Mjc5LCJzdWIiOiJHbGFkeWNlIn0.FBuqwPYC72vOIw70p21chAjhFzuNzVQhkVQ2DSHPSJA
+  /status:
+    get:
+      responses:
+        "200":
+          description: success
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "15"
+            etag:
+              schema:
+                type: string
+              example: W/"f-NQVRlQfKHCoInEbhALgECMonhCE"
+            x-response-time:
+              schema:
+                type: string
+              example: 0.528ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:44:39 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+      tags:
+        - Readiness
   /signin:
     post:
       responses:
@@ -227,7 +331,7 @@ paths:
                 properties:
                   accessToken:
                     type: string
-                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiaWF0IjoxNjQ5NDIzNDU4LCJleHAiOjE2NDk0NTIyNTgsInN1YiI6IlUyRnNkR1ZrWDEvZjdHZTlRNkJtUTR6eXFacEM3V1V1VmxhMTA0bUI3aW89In0.SJtzzyHN8S-FIqgJBn7t3V5genD1wKpDe1Kgf2Wk5tE
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiaWF0IjoxNjQ5NDI1NDc5LCJleHAiOjE2NDk0NTQyNzksInN1YiI6IlUyRnNkR1ZrWDE4OGppRlNrUXVBTjlablZiSm5ITW5obXZxUnIzMDVOZGM9In0.zqp7E02yG3KESUCqJoM1w4IyeqHz33McXmWtoeEFvbg
           headers:
             content-security-policy:
               schema:
@@ -304,15 +408,15 @@ paths:
             etag:
               schema:
                 type: string
-              example: W/"e6-KpCozOEGqrgQRxJiaCZXMsM0GwI"
+              example: W/"e6-+DslSlm2uQYev8R9HPccTDJIZn8"
             x-response-time:
               schema:
                 type: string
-              example: 5.702ms
+              example: 5.830ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -407,11 +511,11 @@ paths:
             x-response-time:
               schema:
                 type: string
-              example: 0.915ms
+              example: 1.024ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -509,11 +613,11 @@ paths:
             x-response-time:
               schema:
                 type: string
-              example: 2.122ms
+              example: 1.855ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -611,11 +715,11 @@ paths:
             x-response-time:
               schema:
                 type: string
-              example: 1.724ms
+              example: 1.169ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -630,10 +734,10 @@ paths:
               properties:
                 userName:
                   type: string
-                  example: Lyric
+                  example: Estella
                 password:
                   type: string
-                  example: Dzw5lIj354cV4_C
+                  example: z_e5uQuFh9taQ52
   /signup:
     post:
       responses:
@@ -646,7 +750,7 @@ paths:
                 properties:
                   accessToken:
                     type: string
-                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiOTYzYzY5ZTktNGIwNi00OTM2LWFkMjktNzgyYjVhMmI3ZGYzIn0sImlhdCI6MTY0OTQyMzQ1OCwiZXhwIjoxNjQ5NDUyMjU4LCJzdWIiOiJVMkZzZEdWa1gxL2hPS3hPbmhxUFAwbEJkRnZYTW5JWkFNUTliRlFWbng4PSJ9.jwQ6vispA6aVN9NZpPcB3bo-Dn7K0BYbx0Ofb-F9BOM
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiZTJmYmVjZGQtMDJhYi00ZDc3LWIyMGEtNGEyZjA4ZTM0ZTk2In0sImlhdCI6MTY0OTQyNTQ3OSwiZXhwIjoxNjQ5NDU0Mjc5LCJzdWIiOiJVMkZzZEdWa1gxOTdEUkYxSUpmQTNidWdHNjMxVFRrRVVoa0dFVmNMTWJVPSJ9.sGnoJxhLtKMC4QNWus_EzhOEuFEUzZTo8BXrH9fTWtA
           headers:
             content-security-policy:
               schema:
@@ -723,15 +827,15 @@ paths:
             etag:
               schema:
                 type: string
-              example: W/"11f-PVCfNylakRo8LKvuLdsjJlnvtKA"
+              example: W/"11f-r1VhMijDVaYb8EF4UmVvG8jJ4Eg"
             x-response-time:
               schema:
                 type: string
-              example: 7.082ms
+              example: 5.896ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -826,11 +930,11 @@ paths:
             x-response-time:
               schema:
                 type: string
-              example: 1.800ms
+              example: 1.868ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -928,11 +1032,11 @@ paths:
             x-response-time:
               schema:
                 type: string
-              example: 1.965ms
+              example: 2.238ms
             date:
               schema:
                 type: string
-              example: Fri, 08 Apr 2022 13:10:58 GMT
+              example: Fri, 08 Apr 2022 13:44:39 GMT
             connection:
               schema:
                 type: string
@@ -947,10 +1051,10 @@ paths:
               properties:
                 userName:
                   type: string
-                  example: Bernadine
+                  example: Blair
                 password:
                   type: string
-                  example: pm6AOSIWk_WOvid
+                  example: RR8Xr0kkKBWozb9
 servers:
   - url: http://localhost:6060
     description: Credential Service Server

@@ -7,7 +7,8 @@
     "start": "nodemon",
     "dev": "nodemon",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts' --exit",
-    "test:tdd": "npm run test -- --watch --watch-extensions ts"
+    "test:tdd": "npm run test -- --watch --watch-extensions ts",
+    "test:coverage": "rimraf ./coverage && nyc npm run test"
   },
   "repository": {
     "type": "git",
@@ -63,11 +64,44 @@
     "easy-api-doc": "^0.2.0",
     "mocha": "^9.2.2",
     "nodemon": "^2.0.15",
+    "nyc": "^15.1.0",
     "sinon": "^13.0.1",
     "sinon-chai": "^3.7.0",
     "supertest": "^6.2.2",
     "ts-node": "^10.7.0",
     "tslib": "^2.3.1",
     "typescript": "^4.6.3"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "exclude": [
+      "test/**",
+      "node_modules/**/*",
+      "**/*.d.ts",
+      "dist/**/*",
+      "*.js",
+      "src/index.ts",
+      "src/application/setup/**/*",
+      "src/domain/config/**/*",
+      "src/application/config/**/*",
+      "src/domain/utils/environment.ts",
+      "src/domain/utils/ResponseError.ts",
+      "src/domain/infra/DynamoDB.ts",
+      "src/application/middlewares/errorHandler.ts"
+    ],
+    "all": true,
+    "cache": true,
+    "check-coverage": true,
+    "branches": 80,
+    "lines": 80,
+    "functions": 80,
+    "statements": 80,
+    "per-file": false
   }
 }

@@ -23,6 +23,22 @@ describe('Database', () => {
       expect(result).to.be.deep.equal(entity);
       expect(putItem).to.have.been.calledOnce;
     });
+
+    it('should fail when database fails', async () => {
+      const pk = faker.lorem.word();
+      const entity = {
+        id: faker.datatype.uuid(),
+        [faker.lorem.word()]: faker.lorem.word(),
+      };
+      const message = faker.lorem.sentence();
+
+      const putItem = stub().yields(new Error(message));
+      const instance = DatabaseBuilder.build({ putItem });
+
+      const promise = instance.persist(pk, entity);
+
+      await expect(promise).to.be.eventually.rejected.with.property('message', message);
+    });
   });
 
   describe('find()', () => {
@@ -41,6 +57,18 @@ describe('Database', () => {
 
       expect(result).to.be.deep.equal(entity);
       expect(getItem).to.have.been.calledOnce;
+    });
+
+    it('should fail when database fails', async () => {
+      const pk = faker.lorem.word();
+      const message = faker.lorem.sentence();
+
+      const getItem = stub().yields(new Error(message));
+      const instance = DatabaseBuilder.build({ getItem });
+
+      const promise = instance.find(pk);
+
+      await expect(promise).to.be.eventually.rejected.with.property('message', message);
     });
   });
 });

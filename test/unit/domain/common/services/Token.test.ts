@@ -26,6 +26,23 @@ describe('Token', () => {
         expect(decoded).to.have.property('data').to.be.deep.equal(content.data);
       });
     });
+
+    it('should fail given a invalid subject', async () => {
+      const content = {
+        sub: [],
+        data: {
+          id: faker.datatype.uuid(),
+          [faker.lorem.word()]: faker.lorem.word(),
+        },
+      };
+
+      const instance = new Token();
+
+      // @ts-ignore
+      const promise = instance.generate(content);
+
+      await expect(promise).to.be.eventually.rejected.with.property('message', '"subject" must be a string');
+    });
   });
 
   describe('verify()', () => {
@@ -45,6 +62,16 @@ describe('Token', () => {
       const result = await instance.verify(token);
 
       expect(result).to.be.deep.equal(content);
+    });
+
+    it('should fail given an invalid token', async () => {
+      const token = faker.lorem.word();
+
+      const instance = new Token();
+
+      const promise = instance.verify(token);
+
+      await expect(promise).to.be.eventually.rejected.with.property('message', 'jwt malformed');
     });
   });
 });
