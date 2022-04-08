@@ -1,0 +1,957 @@
+info:
+  version: 1.0.0
+  title: Credential Service API
+  description: Credential service rest API definitions
+paths:
+  /introspect:
+    post:
+      responses:
+        "200":
+          description: success
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  credentialId:
+                    type: string
+                    example: 606c3778-e4f6-4cfd-b51c-77d182d77ef7
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "55"
+            etag:
+              schema:
+                type: string
+              example: W/"37-MeT0J1ITiUItHBus7LGmOyqzxHY"
+            x-response-time:
+              schema:
+                type: string
+              example: 19.998ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+        "500":
+          description: invalid token
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: jwt malformed
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "27"
+            etag:
+              schema:
+                type: string
+              example: W/"1b-CgdsrqtkLn0qBSLU/p4pPCfLVik"
+            x-response-time:
+              schema:
+                type: string
+              example: 1.504ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+      tags:
+        - Credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNjA2YzM3NzgtZTRmNi00Y2ZkLWI1MWMtNzdkMTgyZDc3ZWY3IiwiZm9vIjoiYmFyIn0sImlhdCI6MTY0OTQyMzQ1OCwiZXhwIjoxNjQ5NDUyMjU4LCJzdWIiOiJDYXJtZWxhIn0.2dJmXyCpRF2rdWfaPqfycI8nXaLTcecw1D1Aaa9mJVU
+  /signin:
+    post:
+      responses:
+        "200":
+          description: success
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiaWF0IjoxNjQ5NDIzNDU4LCJleHAiOjE2NDk0NTIyNTgsInN1YiI6IlUyRnNkR1ZrWDEvZjdHZTlRNkJtUTR6eXFacEM3V1V1VmxhMTA0bUI3aW89In0.SJtzzyHN8S-FIqgJBn7t3V5genD1wKpDe1Kgf2Wk5tE
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "230"
+            etag:
+              schema:
+                type: string
+              example: W/"e6-KpCozOEGqrgQRxJiaCZXMsM0GwI"
+            x-response-time:
+              schema:
+                type: string
+              example: 5.702ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+        "400":
+          description: invalid payload
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: '"userName" is required'
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "38"
+            etag:
+              schema:
+                type: string
+              example: W/"26-ZXnWqbiPp0IYOV/kEd9N+Dq2utY"
+            x-response-time:
+              schema:
+                type: string
+              example: 0.915ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+        "403":
+          description: invalid password
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid password
+                  code:
+                    type: string
+                    example: CR_0002
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "47"
+            etag:
+              schema:
+                type: string
+              example: W/"2f-0naDgfwUHpcdC9eGjX3d3c8E10w"
+            x-response-time:
+              schema:
+                type: string
+              example: 2.122ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+        "404":
+          description: credential not found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Credential not found
+                  code:
+                    type: string
+                    example: CR_0001
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "51"
+            etag:
+              schema:
+                type: string
+              example: W/"33-R4kz2Jg7VxLlSw5fEH85c4QZ6Fk"
+            x-response-time:
+              schema:
+                type: string
+              example: 1.724ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+      tags:
+        - Credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  example: Lyric
+                password:
+                  type: string
+                  example: Dzw5lIj354cV4_C
+  /signup:
+    post:
+      responses:
+        "201":
+          description: success
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiOTYzYzY5ZTktNGIwNi00OTM2LWFkMjktNzgyYjVhMmI3ZGYzIn0sImlhdCI6MTY0OTQyMzQ1OCwiZXhwIjoxNjQ5NDUyMjU4LCJzdWIiOiJVMkZzZEdWa1gxL2hPS3hPbmhxUFAwbEJkRnZYTW5JWkFNUTliRlFWbng4PSJ9.jwQ6vispA6aVN9NZpPcB3bo-Dn7K0BYbx0Ofb-F9BOM
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "287"
+            etag:
+              schema:
+                type: string
+              example: W/"11f-PVCfNylakRo8LKvuLdsjJlnvtKA"
+            x-response-time:
+              schema:
+                type: string
+              example: 7.082ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+        "400":
+          description: invalid payload
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: '"userName" is required'
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "38"
+            etag:
+              schema:
+                type: string
+              example: W/"26-ZXnWqbiPp0IYOV/kEd9N+Dq2utY"
+            x-response-time:
+              schema:
+                type: string
+              example: 1.800ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+        "403":
+          description: credential is already in use
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Credential is already in use
+                  code:
+                    type: string
+                    example: CR_0003
+          headers:
+            content-security-policy:
+              schema:
+                type: string
+              example: "default-src 'self';base-uri 'self';block-all-mixed-content;font-src
+                'self' https: data:;form-action 'self';frame-ancestors
+                'self';img-src 'self' data:;object-src 'none';script-src
+                'self';script-src-attr 'none';style-src 'self' https:
+                'unsafe-inline';upgrade-insecure-requests"
+            cross-origin-embedder-policy:
+              schema:
+                type: string
+              example: require-corp
+            cross-origin-opener-policy:
+              schema:
+                type: string
+              example: same-origin
+            cross-origin-resource-policy:
+              schema:
+                type: string
+              example: same-origin
+            x-dns-prefetch-control:
+              schema:
+                type: string
+              example: off
+            expect-ct:
+              schema:
+                type: string
+              example: max-age=0
+            x-frame-options:
+              schema:
+                type: string
+              example: SAMEORIGIN
+            strict-transport-security:
+              schema:
+                type: string
+              example: max-age=15552000; includeSubDomains
+            x-download-options:
+              schema:
+                type: string
+              example: noopen
+            x-content-type-options:
+              schema:
+                type: string
+              example: nosniff
+            origin-agent-cluster:
+              schema:
+                type: string
+              example: ?1
+            x-permitted-cross-domain-policies:
+              schema:
+                type: string
+              example: none
+            referrer-policy:
+              schema:
+                type: string
+              example: no-referrer
+            x-xss-protection:
+              schema:
+                type: string
+              example: "0"
+            vary:
+              schema:
+                type: string
+              example: Origin
+            content-type:
+              schema:
+                type: string
+              example: application/json; charset=utf-8
+            content-length:
+              schema:
+                type: string
+              example: "59"
+            etag:
+              schema:
+                type: string
+              example: W/"3b-ksdyMG1SDyo/9uR5QKR3nJ93Iig"
+            x-response-time:
+              schema:
+                type: string
+              example: 1.965ms
+            date:
+              schema:
+                type: string
+              example: Fri, 08 Apr 2022 13:10:58 GMT
+            connection:
+              schema:
+                type: string
+              example: close
+      tags:
+        - Credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  example: Bernadine
+                password:
+                  type: string
+                  example: pm6AOSIWk_WOvid
+servers:
+  - url: http://localhost:6060
+    description: Credential Service Server
+openapi: 3.0.3

@@ -12,6 +12,9 @@ if (fs.existsSync('.env')) {
   dotenv.config({ path: '.env' });
 }
 
+export const ENV = process.env.NODE_ENV || 'development';
+export const PROD = ENV === 'production';
+
 export const CONFIG = {
   PORT: Number(process.env.PORT) || 6060,
 };

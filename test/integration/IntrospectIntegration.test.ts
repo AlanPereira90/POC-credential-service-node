@@ -1,16 +1,25 @@
 import { Express } from 'express';
 import supertest from 'supertest';
 import faker from '@faker-js/faker';
-import { INTERNAL_SERVER_ERROR, OK } from 'http-status';
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from 'http-status';
 import { expect } from 'chai';
 import Jwt from 'jsonwebtoken';
 
 import { App } from '../../src/application/setup/App';
 import { TOKEN } from '../../src/domain/utils/environment';
+import { doc } from '../documentation';
 
 let app: Express;
 before(function () {
   app = new App().app;
+});
+
+after(async () => {
+  try {
+    await doc.writeFile();
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 describe('POST /introspect', () => {
@@ -18,7 +27,7 @@ describe('POST /introspect', () => {
     const content = {
       sub: faker.name.firstName(),
       data: {
-        id: faker.random.uuid(),
+        id: faker.datatype.uuid(),
         foo: 'bar',
       },
     };
@@ -38,6 +47,11 @@ describe('POST /introspect', () => {
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('credentialId', content.data.id);
 
+          doc
+            .path('/introspect')
+            .verb('post', { requestBody: { content: body, mediaType: 'application/json' }, tags: ['Credentials'] })
+            .fromSuperAgentResponse(res, 'success');
+
           done();
         });
     });
@@ -47,7 +61,7 @@ describe('POST /introspect', () => {
     const content = {
       sub: faker.name.firstName(),
       data: {
-        id: faker.random.uuid(),
+        id: faker.datatype.uuid(),
         foo: 'bar',
       },
     };
@@ -66,6 +80,11 @@ describe('POST /introspect', () => {
           expect(err).to.be.null;
           expect(res.body).to.be.an('object');
           expect(res.body).to.have.property('message', 'jwt expired');
+
+          doc
+            .path('/introspect')
+            .verb('post', { requestBody: { content: body, mediaType: 'application/json' }, tags: ['Credentials'] })
+            .fromSuperAgentResponse(res, 'expired token');
 
           done();
         });
@@ -86,6 +105,30 @@ describe('POST /introspect', () => {
         expect(err).to.be.null;
         expect(res.body).to.be.an('object');
         expect(res.body).to.have.property('message', 'jwt malformed');
+
+        doc
+          .path('/introspect')
+          .verb('post', { requestBody: { content: body, mediaType: 'application/json' }, tags: ['Credentials'] })
+          .fromSuperAgentResponse(res, 'invalid token');
+
+        done();
+      });
+  });
+
+  it('should return 400 BAD_REQUEST given an invalid payload', (done) => {
+    const body = {
+      access_token: faker.datatype.uuid(),
+    };
+
+    supertest(app)
+      .post('/introspect')
+      .set('Content-type', 'application/json')
+      .send(body)
+      .expect(BAD_REQUEST)
+      .end((err, res) => {
+        expect(err).to.be.null;
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('message', '"accessToken" is required');
 
         done();
       });

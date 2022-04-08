@@ -7,6 +7,7 @@ Credential-service is a POC used to study DDD and TDD with Node
 ### How to use in development environment?
 
 Run the command `docker-compose up` to up local dynamoDB (port 8000) and credential-service (ports 6060) containers.
+With the containers up, the api documentation can be checked [here](http://127.0.0.1:6060/api-docs)
 
 ### How to test?
 
