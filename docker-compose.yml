@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    container_name: user-service
+    container_name: credential-service
     ports:
       - 6060:6060
     env_file: .env
@@ -15,7 +15,7 @@ services:
     volumes:
       - ./src:/api/src
     networks:
-      - default
+      - np-network
 
   dynamodb:
     command: ['-jar', 'DynamoDBLocal.jar', '-sharedDb', '-dbPath', '/var/lib/dynamodb/']
@@ -23,12 +23,14 @@ services:
     environment:
       VIRTUAL_PORT: 8000
     image: amazon/dynamodb-local:latest
-    networks:
-      - default
     ports:
       - 8000:8000
     user: root
     volumes:
       - dynamodb:/var/lib/dynamodb/
+    networks:
+      - np-network
 volumes:
   dynamodb:
+networks:
+  np-network:
